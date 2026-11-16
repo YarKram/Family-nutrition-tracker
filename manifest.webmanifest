@@ -1,0 +1,8 @@
+{
+  "name": "Family Nutrition Tracker",
+  "short_name": "Nutrition",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f2f6f3",
+  "theme_color": "#176b55"
+}
