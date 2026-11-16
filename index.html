@@ -53,7 +53,7 @@
  });
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="https://unpkg.com/@supabase/supabase-js@2"></script><script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" crossorigin="anonymous" onerror="window.__showDiag&&window.__showDiag('error','Не завантажився Supabase CDN','Браузер не зміг завантажити бібліотеку з cdn.jsdelivr.net.')"></script><script>
 if(!window.supabase||!window.supabase.createClient){window.__showDiag("error","Не завантажилася бібліотека Supabase","Перевір підключення до інтернету або блокування CDN.");throw new Error("Supabase JS library unavailable")}const URL="https://vonfjhqhhkafwjavqxsu.supabase.co",KEY="sb_publishable_RMp11FwzRfDa2WnwyM8aHw_h4rpAkJf",db=supabase.createClient(URL,KEY),$=x=>document.getElementById(x);
 let user,profiles=[],pid,entries=[],waterRows=[],day=new Date().toLocaleDateString("en-CA");
 $("date").value=day;const slots={breakfast:"Сніданок",snack_1:"Перекус 1",lunch:"Обід",snack_2:"Перекус 2",dinner:"Вечеря"};
