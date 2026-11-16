@@ -23,27 +23,33 @@
 <script>
 (function(){
  const box=document.getElementById('diagToast');
+ window.__diagErrorSeen=false;
  window.__showDiag=function(kind,title,detail){
   box.dataset.kind=kind||'error';box.style.display='block';
   box.textContent=title+(detail?'\\n'+detail:'');
  };
- window.addEventListener('error',function(e){
-  window.__showDiag('error','Помилка JavaScript',e.message||'Невідома помилка');
- });
+ window.onerror=function(message,source,line,column,error){
+  window.__diagErrorSeen=true;
+  window.__showDiag('error','Помилка JavaScript',String(message)+'\\nФайл: '+(source||'невідомо')+'\\nРядок: '+line+', колонка: '+column+(error&&error.stack?'\\n'+error.stack:''));
+  return false;
+ };
  window.addEventListener('unhandledrejection',function(e){
-  const m=e.reason?.message||String(e.reason||'Невідома помилка');
+  window.__diagErrorSeen=true;
+  const m=e.reason?.stack||e.reason?.message||String(e.reason||'Невідома помилка');
   window.__showDiag('error','Помилка запиту або авторизації',m);
  });
  document.addEventListener('click',function(e){
   const b=e.target.closest&&e.target.closest('#send');
   if(b&&!window.__otpHandlerReady){
-   window.__showDiag('error','Кнопка не ініціалізована','Скрипт входу не запустився. Перезавантаж сторінку; якщо помилка повториться, надішли цей екран.');
+   window.__showDiag('error','Кнопка не ініціалізована','Основний скрипт не створив обробник. Дивись попереднє повідомлення про помилку.');
   }
  },true);
  window.addEventListener('load',function(){
   setTimeout(function(){
-   if(!window.__otpHandlerReady) window.__showDiag('error','Не запустився модуль входу','Ймовірно, бібліотека Supabase або основний JavaScript не завантажилися.');
-  },2500);
+   if(!window.__otpHandlerReady&&!window.__diagErrorSeen&&!box.textContent){
+    window.__showDiag('error','Не запустився модуль входу','Жодної помилки JavaScript не перехоплено. Можлива проблема завантаження скрипта або CDN.');
+   }
+  },3000);
  });
 })();
 </script>
